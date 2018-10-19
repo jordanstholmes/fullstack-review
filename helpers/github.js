@@ -16,9 +16,15 @@ let getCommits = (repo, callback) => {
     }
   };
 
-  callback(null, null, url);
+  
 
-  // request(options, callback);
+  request(options, (err, response, body) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    callback(null, null, JSON.parse(body));
+  });
 }
 
 let getReposInfo = (userName, callback) => {
@@ -43,7 +49,7 @@ let getReposInfo = (userName, callback) => {
 
     repos = JSON.parse(repos);
 
-    getCommits(repos[0], (err, response, body) => {
+    getCommits(repos[3], (err, response, body) => {
       if (err) {
         console.log(err);
         return;
