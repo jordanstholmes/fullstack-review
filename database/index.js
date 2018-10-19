@@ -3,7 +3,7 @@ mongoose.connect('mongodb://localhost/fetcher');
 
 let repoSchema = mongoose.Schema({
   name: String,
-  totalRepos: Number,
+  commits: Number,
   url: String,
   githubId: Number
 });

@@ -11,16 +11,21 @@ app.use(morgan('dev'));
 
 app.post('/repos', function (req, res) {
   console.log(req.body);
-  
-  github.getReposByUsername(req.body, (err, response, body) => {
+
+  github.getReposInfo(req.body, (err, response, body) => {
     if (err) {
       console.log(err);
     }
-    const repos = JSON.parse(body);
+
+    console.log(body);
+    // const repos = JSON.parse(body);
+    // console.log(repos[0]);
+
+    res.end();
+    // res.send(`${repos.length} repos found for user`);
   });
 
 
-  res.send('Sup, from the server');
   // TODO - your code here!
   // This route should take the github username provided
   // and get the repo information from the github API, then

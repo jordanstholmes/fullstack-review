@@ -2,7 +2,26 @@ const request = require('request');
 const config = require('../config.js');
 const _ = require('underscore');
 
-let getReposByUsername = (userName, callback) => {
+let getCommits = (repo, callback) => {
+  var url = repo.commits_url;
+  if (url) {
+    url = url.slice(0, url.length - 6);
+  }
+
+
+  let options = {
+    url: url,
+    headers: {
+      'User-Agent': 'request',
+    }
+  };
+
+  callback(null, null, url);
+
+  // request(options, callback);
+}
+
+let getReposInfo = (userName, callback) => {
   // TODO - Use the request module to request repos for a specific
   // user from the github API
 
@@ -16,7 +35,22 @@ let getReposByUsername = (userName, callback) => {
     }
   };
 
-  request(options, callback);
+  request(options, (err, response, repos) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    repos = JSON.parse(repos);
+
+    getCommits(repos[0], (err, response, body) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      callback(null, null, body);
+    }); 
+  });
 };
 
 /*
@@ -24,16 +58,6 @@ Decided to abandon trying to get all commits.
 Leaving the two functions below for the time being.
 */
 
-let getCommits = (url, callback) => {
-  let options = {
-    url: url,
-    headers: {
-      'User-Agent': 'request',
-    }
-  };
-
-  request(options, callback);
-}
 
 /*
 Couldn't get the function below working quickly enough.
@@ -56,7 +80,7 @@ let getCommitsForAll = (repos, callback) => {
   
 
 
-module.exports.getReposByUsername = getReposByUsername;
+module.exports.getReposInfo = getReposInfo;
 module.exports.getCommits = getCommits;
 module.exports.getCommitsForAll = getCommits;
 
