@@ -10,21 +10,34 @@ app.use(bodyParser.text());
 app.use(morgan('dev'));
 
 app.post('/repos', function (req, res) {
-  console.log(req.body);
+  const userName = req.body;
 
-  github.getReposByUserName(req.body, (err, response, repos) => {
+  github.getReposByUserName(userName, (err, response, repos) => {
     if (err) {
       console.log(err);
+      return;
     }
 
+    // console.log(repos[0]);
+
     repos.forEach((repo) => {
+
+      const repoData = {
+        name: repo.name, 
+        url: repo.html_url,
+        githubId: repo.id
+      };
+
       github.getCommitsByRepo(repo, (err, response, commits) => {
-        console.log(commits.length);
-      })
-    })
+        if (Array.isArray(commits)) {
+          repoData.totalCommits = commits.length;
+        } else if (commits.message === 'Git Repository is empty.') {
+          repoData.totalCommits = 0;
+        }
+      });
+    });
 
     res.end();
-    // res.send(`${repos.length} repos found for user`);
   });
 
 

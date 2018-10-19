@@ -13,6 +13,7 @@ let getCommitsByRepo = (repo, callback) => {
     url: url,
     headers: {
       'User-Agent': 'request',
+      'Authorization': `token ${config.TOKEN}`
     }
   };
 
