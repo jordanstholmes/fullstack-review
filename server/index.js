@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const github = require('../helpers/github.js')
 
 let app = express();
 
@@ -10,6 +11,14 @@ app.use(morgan('dev'));
 
 app.post('/repos', function (req, res) {
   console.log(req.body);
+  github.getReposByUsername(req.body, (err, response, body) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log(body);
+  });
+
+
   res.send('Sup, from the server');
   // TODO - your code here!
   // This route should take the github username provided
