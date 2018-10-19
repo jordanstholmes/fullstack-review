@@ -1,9 +1,16 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+
 let app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
+app.use(bodyParser.text());
+app.use(morgan('dev'));
 
 app.post('/repos', function (req, res) {
+  console.log(req.body);
+  res.send('Sup, from the server');
   // TODO - your code here!
   // This route should take the github username provided
   // and get the repo information from the github API, then
