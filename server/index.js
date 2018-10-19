@@ -15,7 +15,19 @@ app.post('/repos', function (req, res) {
     if (err) {
       console.log(err);
     }
-    console.log(body);
+    const repos = JSON.parse(body);
+    var commitsURL = repos[0].commits_url;
+    commitsURL = commitsURL.slice(0, commitsURL.length - 6);
+
+    github.getCommits(commitsURL, (err, response, body) => {
+      if (err) {
+        console.log(err);
+      }
+      console.log(JSON.parse(body));
+    });
+    console.log(github)
+
+    // console.log(JSON.parse(body));
   });
 
 
