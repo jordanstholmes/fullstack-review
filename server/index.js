@@ -12,14 +12,16 @@ app.use(morgan('dev'));
 app.post('/repos', function (req, res) {
   console.log(req.body);
 
-  github.getReposInfo(req.body, (err, response, body) => {
+  github.getReposByUserName(req.body, (err, response, repos) => {
     if (err) {
       console.log(err);
     }
 
-    console.log(body);
-    // const repos = JSON.parse(body);
-    // console.log(repos[0]);
+    repos.forEach((repo) => {
+      github.getCommitsByRepo(repo, (err, response, commits) => {
+        console.log(commits.length);
+      })
+    })
 
     res.end();
     // res.send(`${repos.length} repos found for user`);

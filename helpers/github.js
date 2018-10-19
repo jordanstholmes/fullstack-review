@@ -2,7 +2,7 @@ const request = require('request');
 const config = require('../config.js');
 const _ = require('underscore');
 
-let getCommits = (repo, callback) => {
+let getCommitsByRepo = (repo, callback) => {
   var url = repo.commits_url;
   if (url) {
     url = url.slice(0, url.length - 6);
@@ -16,18 +16,16 @@ let getCommits = (repo, callback) => {
     }
   };
 
-  
-
-  request(options, (err, response, body) => {
+  request(options, (err, response, commits) => {
     if (err) {
       console.log(err);
       return;
     }
-    callback(null, null, JSON.parse(body));
+    callback(null, response, JSON.parse(commits));
   });
 }
 
-let getReposInfo = (userName, callback) => {
+let getReposByUserName = (userName, callback) => {
   // TODO - Use the request module to request repos for a specific
   // user from the github API
 
@@ -48,14 +46,16 @@ let getReposInfo = (userName, callback) => {
     }
 
     repos = JSON.parse(repos);
+    callback(null, response, repos);
 
-    getCommits(repos[3], (err, response, body) => {
+
+    /*getCommitsByRepo(repos[3], (err, response, body) => {
       if (err) {
         console.log(err);
         return;
       }
-      callback(null, null, body);
-    }); 
+      callback(null, response, body);
+    }); */
   });
 };
 
@@ -70,23 +70,23 @@ Couldn't get the function below working quickly enough.
 Leaving it be for the time being
 */
 
-let getCommitsForAll = (repos, callback) => {
-  var commitsJSON = repos.forEach(repo => {
-    var url = repo.commits_url; //has SHA-1 at the end
-    url = url.slice(0, url.length - 6); //remove SHA-1
+// let getCommitsForAll = (repos, callback) => {
+//   var commitsJSON = repos.forEach(repo => {
+//     var url = repo.commits_url; //has SHA-1 at the end
+//     url = url.slice(0, url.length - 6); //remove SHA-1
 
-    getCommits(url, (err, response, body) => {
-      if (err) {
-        console.log(err);
-      }
-      console.log(body);
-    });
-  });
-};
+//     getCommits(url, (err, response, body) => {
+//       if (err) {
+//         console.log(err);
+//       }
+//       console.log(body);
+//     });
+//   });
+// };
   
 
 
-module.exports.getReposInfo = getReposInfo;
-module.exports.getCommits = getCommits;
-module.exports.getCommitsForAll = getCommits;
+module.exports.getReposByUserName = getReposByUserName;
+module.exports.getCommitsByRepo = getCommitsByRepo;
+// module.exports.getCommitsForAll = getCommits;
 
