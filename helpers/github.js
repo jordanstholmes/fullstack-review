@@ -1,5 +1,6 @@
 const request = require('request');
 const config = require('../config.js');
+const _ = require('underscore');
 
 let getReposByUsername = (userName, callback) => {
   // TODO - Use the request module to request repos for a specific
@@ -16,7 +17,12 @@ let getReposByUsername = (userName, callback) => {
   };
 
   request(options, callback);
-}
+};
+
+/*
+Decided to abandon trying to get all commits.
+Leaving the two functions below for the time being.
+*/
 
 let getCommits = (url, callback) => {
   let options = {
@@ -26,11 +32,31 @@ let getCommits = (url, callback) => {
     }
   };
 
-
   request(options, callback);
 }
+
+/*
+Couldn't get the function below working quickly enough.
+Leaving it be for the time being
+*/
+
+let getCommitsForAll = (repos, callback) => {
+  var commitsJSON = repos.forEach(repo => {
+    var url = repo.commits_url; //has SHA-1 at the end
+    url = url.slice(0, url.length - 6); //remove SHA-1
+
+    getCommits(url, (err, response, body) => {
+      if (err) {
+        console.log(err);
+      }
+      console.log(body);
+    });
+  });
+};
   
 
 
 module.exports.getReposByUsername = getReposByUsername;
 module.exports.getCommits = getCommits;
+module.exports.getCommitsForAll = getCommits;
+
