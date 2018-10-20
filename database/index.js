@@ -26,10 +26,11 @@ let save = (repoData, callback) => {
 
 let get = (callback) => {
 
-  Repo.find((err, results) => {
-    console.log(err, results);
-  })
-
+  Repo.
+    find().
+    sort('-totalCommits').
+    limit(25).
+    exec((err, results) => callback(err, results));
 };
 
 module.exports.save = save;
