@@ -19,12 +19,12 @@ app.post('/repos', function (req, res) {
       return;
     }
 
-    // console.log(repos[0]);
-
     repos.forEach((repo) => {
 
       const repoData = {
-        name: repo.name, 
+        repoName: repo.name,
+        userName: repo.owner.login,
+        fullName: repo.full_name, 
         url: repo.html_url,
         githubId: repo.id
       };
