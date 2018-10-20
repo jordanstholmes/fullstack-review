@@ -9,8 +9,7 @@ class App extends React.Component {
     super(props);
     this.state = { 
       repos: []
-    }
-
+    };
   }
 
   search(term) {
@@ -26,6 +25,12 @@ class App extends React.Component {
         })
       )
       .fail(err => console.log(err));
+  }
+
+  componentDidMount() {
+    this.getRepos((err, repos) => {
+      this.setState({repos: repos})
+    });
   }
 
   /*
