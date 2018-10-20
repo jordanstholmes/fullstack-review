@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const github = require('../helpers/github.js')
+const github = require('../helpers/github.js');
+const db = require('../database/index.js');
 
 let app = express();
 
@@ -34,7 +35,10 @@ app.post('/repos', function (req, res) {
         } else if (commits.message === 'Git Repository is empty.') {
           repoData.totalCommits = 0;
         }
+
+        db.save(repoData);
       });
+
     });
 
     res.end();
