@@ -21,7 +21,16 @@ class App extends React.Component {
       data: term,
       contentType: 'text/plain'
     })
-    .done(results => console.log('SUCCESS:', results))
+    .done(results => {
+      $.ajax({
+      url: 'http://localhost:1128/repos',
+      method: 'POST',
+      data: term,
+      contentType: 'text/plain'
+      })
+      .done(results => console.log(results))
+      .fail(err => console.log(err))
+    })
     .fail(err => console.log(err));
   }
 

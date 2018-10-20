@@ -46,7 +46,7 @@ app.post('/repos', function (req, res) {
 
     });
 
-    res.end();
+    res.redirect('/repos');
   });
 
 
@@ -57,8 +57,8 @@ app.post('/repos', function (req, res) {
 });
 
 app.get('/repos', function (req, res) {
-  db.get((err, result) => {
-    console.log(result.length);
+  db.get((err, dbResults) => {
+    res.send(dbResults);
   });
   // TODO - your code here!
   // This route should send back the top 25 repos
