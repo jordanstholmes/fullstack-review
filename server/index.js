@@ -19,6 +19,11 @@ app.post('/repos', function (req, res) {
       return;
     }
 
+    if (!repos.length) {
+      res.end();
+      return;
+    }
+
     repos.forEach((repo) => {
 
       const repoData = {

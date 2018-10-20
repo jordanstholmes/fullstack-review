@@ -4,7 +4,7 @@ mongoose.connect('mongodb://localhost/fetcher');
 let repoSchema = mongoose.Schema({
   repoName: String,
   userName: String,
-  fullName: String,
+  fullName: {type: String, unique: true},
   totalCommits: Number,
   url: String,
   githubId: Number
