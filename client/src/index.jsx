@@ -13,7 +13,7 @@ class App extends React.Component {
 
   }
 
-  search (term) {
+  search(term) {
     console.log(`${term} was searched`);
     $.ajax({
       url: 'http://localhost:1128/repos',
@@ -21,17 +21,17 @@ class App extends React.Component {
       data: term,
       contentType: 'text/plain'
     })
-    .done(results => {
-      $.ajax({
-      url: 'http://localhost:1128/repos',
-      method: 'POST',
-      data: term,
-      contentType: 'text/plain'
+      .done(() => {
+        $.ajax({
+        url: 'http://localhost:1128/repos',
+        method: 'POST',
+        data: term,
+        contentType: 'text/plain'
+        })
+        .done(repos => this.setState({repos: repos}))
+        .fail(err => console.log(err))
       })
-      .done(results => console.log(results))
-      .fail(err => console.log(err))
-    })
-    .fail(err => console.log(err));
+      .fail(err => console.log(err));
   }
 
   render () {
