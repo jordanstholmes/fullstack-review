@@ -21,23 +21,37 @@ class App extends React.Component {
       data: term,
       contentType: 'text/plain'
     })
-      .done(() => {
-        $.ajax({
-        url: 'http://localhost:1128/repos',
-        method: 'POST',
-        data: term,
-        contentType: 'text/plain'
+      .done(() => this.getRepos((err, repos) => {
+          this.setState( {repos: repos} );
         })
-        .done(repos => {
-          this.setState({repos: repos});
-          console.log(repos);
-        })
-        .fail(err => console.log(err))
-      })
+      )
       .fail(err => console.log(err));
   }
 
+  /*
+  What am I trying to do?
+  on file load,
+  on page load
+  on search 
+  (I can probably factor the below out)
+  I want to request (async) repos
+  And THEN re-render with results
+  */
+
+  getRepos(callback) {
+    $.ajax({
+        url: 'http://localhost:1128/repos',
+        method: 'GET',
+    })
+      .done(repos => {
+        console.log('INSIDE GETREPOS:', repos);
+        callback(null, repos);
+      })
+      .fail(err => console.log(err))
+  }
+
   render () {
+
     return (<div>
       <h1>Github Fetcher</h1>
       <Search onSearch={this.search.bind(this)}/>
